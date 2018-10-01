@@ -33,13 +33,13 @@ public class GaussianEl()
       }
   
       double[] temp1;
-      temp1 = M[k];
-      M[k] = M[max];
+      temp1 = M[j];
+      M[j] = M[max];
       M[max] = temp1;
   
       double temp2;
-      temp2 = N[k];
-      N[k] = N[max];
+      temp2 = N[j];
+      N[j] = N[max];
       N[max] = temp2;
       //Biar elemen pivotny jadi 1
       l = j;
