@@ -4,8 +4,9 @@ public class GaussianEl()
 {
   public static void GaussianEl(double[][] M, double[] N)
   {
-    int i, j, k, l, m, n, o, p, r, c;
-    int max, dvdr;
+    int i, j, k, l, m, n, o, p, row, col;
+    int max;
+    double dvdr;
   
     //Pivot row
     row = M.length;
