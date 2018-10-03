@@ -66,14 +66,21 @@ public class GaussJordanEl()
         N[n] = N[n] - (dvdr * N[j]);
       }
     }
-
+    
+    boolean stop = false;
     for (p = 0; p < col; p++)
     {
       q = row - 1;
       while ((M[q][p] != 1) && (q >= 0))
       {
+        if ((p == col - 1) && (M[q][p] == 0))
+        {
+          stop = true;
+          break;
+        }
         q--;
       }
+      if (stop) break;
 
       double temp3;
       if (q != 0)
