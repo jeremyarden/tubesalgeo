@@ -4,8 +4,8 @@ import java.util.Scanner;
 public class SPL {
 	
 	static final String file_loc = "/Users/abiyyuismunandar/Documents/Algeo/src/";
-	public double var [][];
-	public double sol [];
+	public static double var [][];
+	public static double sol [];
 	//Asumsi matriks selalu dalam bentuk nxn
 	
 	/*Defaul constructor*/
@@ -31,7 +31,7 @@ public class SPL {
 		}
 	}
 	
-	public void setUpSPL()
+	public static void setUpSPL()
 	{
 		/*Kamus*/
 		int n; 	//Jumlah variabel
@@ -65,7 +65,7 @@ public class SPL {
 		sol = filledSol;
 	}
 	
-	public void bacaInterpol()
+	public static void bacaInterpol()
 	{
 		/*Kamus*/
 		Scanner sc;
@@ -80,10 +80,12 @@ public class SPL {
 		n = sc.nextInt();
 		intpVar = new double[n][n];
 		intpSol = new double[n];
+		Interpolasi.setUplist(n);
 		for(int k = 0;k<n;k++)		//k = row
 		{
 			System.out.print("Masukkan (x"+k+",y"+k+"):");
 			x = sc.nextDouble(); y = sc.nextDouble();
+			Interpolasi.isiPoint(x,y,k);
 			for(int j = 0;j<n;j++)	//j = column
 			{
 				intpVar[k][j] = intp.pangkatN(x,j);
@@ -94,7 +96,7 @@ public class SPL {
 		sol = intpSol;
 	}
 	
-	public void cetakAugment()
+	public static void cetakAugment()
 	{
 		System.out.println("Matriks Augmented: ");
 		for(int i = 0;i<var.length;i++)
@@ -110,7 +112,7 @@ public class SPL {
 	}
 	
 	@SuppressWarnings("resource")
-	public void bacaSplFile(String filename)
+	public static void bacaSplFile(String filename)
 	{
 		/*Kamus*/
 		Scanner reader = null, countElmt = null, counterRow = null;
@@ -158,7 +160,7 @@ public class SPL {
 		sol = filledSol;
 	}
 	
-	public void bacaInterpolFile(String filename)
+	public static void bacaInterpolFile(String filename)
 	{
 		/*Kamus*/
 		Scanner reader = null, counter = null;
@@ -183,9 +185,11 @@ public class SPL {
 		}
 		intpVar = new double[n][n];
 		intpSol = new double[n];
+		Interpolasi.setUplist(n);
 		for(int k = 0;k<n;k++)		//k = row
 		{
 			x = reader.nextDouble(); y = reader.nextDouble();
+			Interpolasi.isiPoint(x, k, k);
 			for(int j = 0;j<n;j++)	//j = column
 			{
 				intpVar[k][j] = intp.pangkatN(x,j);
