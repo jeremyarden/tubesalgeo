@@ -1,69 +1,78 @@
-/*
- * 
- */
 import java.util.Scanner;
 
 public class Interpolasi  {
-	private double pointInterp;
-	private double solInterp;
+	public static double pointInterp;
+	public static double solInterp;
+	public static double listX[];
+	public static double listY[];
 	
 	public Interpolasi()
 	{
 		pointInterp = 0;
 		solInterp = 0;		//hasil dari interpolasi y(x) 
 	}
-	
-	public void bacaPointInterp()
+	public static void setUplist(int n)
+	{
+		listX = new double[n];
+		listY = new double[n];
+	}
+	public static void bacaPointInterp()
 	{
 		Scanner sc = new Scanner(System.in);
 		System.out.print("Masukkan point interpolasi: ");
 		pointInterp = sc.nextDouble();
 	}
 	
-	public void interpolate(double var[][], double sol[])
+	public static void interpolate(double var[][], double sol[], boolean GJ)
 	{
 		/*Kamus*/
-		Solver s;
+
 		/*Algoritma*/
-		s = new Solver();
-		s.gaussian(var, sol);
-		s.backSub(var, sol);
-		for(int i = 0;i<s.solution.length;i++)
+		if(GJ)
 		{
-			solInterp+=s.solution[i]*pangkatN(pointInterp,i);
+			Solver.GaussJordanEl(var, sol);
+		}
+		else 
+		{
+			Solver.GaussianEl(var, sol);
+		}
+		Solver.backSub(var, sol);
+		for(int i = 0;i<Solver.solution.length;i++)
+		{
+			solInterp+=Solver.solution[i]*pangkatN(pointInterp,i);
 		}
 	}
 	
-	public void printIntpRes(double var[][], double sol[])
+	public static void printIntpRes(double var[][], double sol[],boolean GJ)
 	{
 		/*Kamus*/
-		Solver s;
 		
 		/*Algoritma*/
-		s= new Solver();
-		s.gaussian(var, sol);
-		s.backSub(var, sol);
-		for(int i = 0;i<s.solution.length;i++)
+		interpolate(var,sol,GJ);
+		System.out.println("Point yang dimasukkan:");
+		int i = 0;
+		while((i<listX.length))
 		{
-			solInterp+=s.solution[i]*pangkatN(pointInterp,i);
+			System.out.printf("(%.3f,%.3f)\n", listX[i],listY[i]);
+			i++;
 		}
 		System.out.print("Persamaan Polinom: ");
-		for(int i = 0;i<s.solution.length;i++)
+		for( i = 0;i<Solver.solution.length;i++)
 		{
-			if(i == 0) System.out.printf("%.3f",s.solution[i]);
-			else if(i == 1) System.out.printf("%.3fx", Math.abs(s.solution[i]));
+			if(i == 0) System.out.printf("%.3f",Solver.solution[i]);
+			else if(i == 1) System.out.printf("%.3fx", Math.abs(Solver.solution[i]));
 			else
-				System.out.printf("%.3fx^%d",Math.abs(s.solution[i]),i);
-			if(i<s.solution.length-1)
+				System.out.printf("%.3fx^%d",Math.abs(Solver.solution[i]),i);
+			if(i<Solver.solution.length-1)
 			{
-				System.out.print((s.solution[i+1]>=0)?" + ":" - ");
+				System.out.print((Solver.solution[i+1]>=0)?" + ":" - ");
 			}
 		}
 		System.out.println();
 		System.out.printf("Hasil Interpolasi x = %.3f adalah %.3f", pointInterp, solInterp);
 	}
 	
-	public double pangkatN(double x, int n)	//x bilangan yang ingin dipangkat, n pangkatnya
+	public static double pangkatN(double x, int n)	//x bilangan yang ingin dipangkat, n pangkatnya
  	{
 		double nilai;
 		nilai = x;
@@ -84,6 +93,11 @@ public class Interpolasi  {
 		}
 		
 		return nilai;
+	}
+	public static void isiPoint(double X, double Y,int i)
+	{
+		listX[i] = X;
+		listY[i] = Y;
 	}
 	
 }
