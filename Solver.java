@@ -37,11 +37,11 @@ public class Solver
 		boolean allZero;
 		int colLength, i;
 		
-		colLength = var[var.length-1].length-1;
+		colLength = (var[var.length-1].length)-1;
 		allZero = true;i = 0;
 		while(i<colLength && allZero)
 		{
-			allZero = var[colLength][i] == 0;
+			allZero = var[var.length-1][i] == 0;
 			i++;
 		}
 		
@@ -116,6 +116,19 @@ public class Solver
 		
 	}
 	
+	private static boolean isAllZero(double arr[][],int row)
+	{
+		boolean isZero;
+		int col;
+		isZero = true;col=0;
+		while(isZero && col<arr[row].length)
+		{
+			isZero = arr[row][col] == 0;
+			col++;
+		}
+		return isZero;
+	}
+	
 	private static int isiColumn(double arr[][], int col) //isi artinya >0
 	{
 		int count;
@@ -132,15 +145,16 @@ public class Solver
 	}
 	public static void GaussianEl(double[][] M, double[] N)
 	  {
-	    int i, j, k, l, m, n, o, p, row, col;
+	    int i, j, k, l, m, n, o, p, capeksayakak, capek, row, col;
 	    double dvdr;
 	    int max;
+	    boolean AllZero;
 	  
 	    //Pivot row
 	    row = M.length;
 	    col = M[0].length;
 	  
-	    if (row > col)
+	    if (row <= col)
 	    {
 	      i = row;
 	    }
@@ -152,12 +166,14 @@ public class Solver
 	    for (j = 0; j < i; j++)
 	    {
 	      max = j;
-	      for (k = j + 1; k < i; k++)
+	      k = j+1;
+	      while(k<row)
 	      {
-	        if (Math.abs(M[k][j]) > Math.abs(M[max][j]))
-	        {
-	          max = k;
-	        }
+		    	  if (Math.abs(M[k][j]) > Math.abs(M[max][j]))
+		        {
+		    		  max = k;
+		        }
+		    	  k++;
 	      }
 	      double[] temp1;
 	      temp1 = M[j];
@@ -182,9 +198,10 @@ public class Solver
 	          M[j][m] = M[j][m] / dvdr;
 	        }
 	        N[j] = N[j] / dvdr;
-	      }
+	      
 	      //Biar bawahny jadi 0
-	      for (n = j + 1; n < row; n++)
+	      n = j + 1;
+	      while (n < row)
 	      {
 	        dvdr = M[n][l] / M[j][l];
 	        for (o = 0; o < col; o++)
@@ -192,7 +209,24 @@ public class Solver
 	          M[n][o] = M[n][o] - (dvdr * M[j][o]);
 	        }
 	        N[n] = N[n] - (dvdr * N[j]);
+	        n++;
 	      }
+	    }
+	    }
+	    
+	    for (capeksayakak = 0; capeksayakak < row; capeksayakak++)
+	    {
+	    	  AllZero = isAllZero(M, capeksayakak);
+	    	  double temp[];
+	    	  if (AllZero)
+	    	  {
+	    		  temp = M[capeksayakak];
+	    		  for (capek = capeksayakak; capek < row-1 ; capek++)
+	    		  {
+	    			  M[capek] = M[capek+1];
+	    		  }
+	    		  M[row-1] = temp;
+	    	  }
 	    }
 	  }
 	
@@ -200,73 +234,20 @@ public class Solver
 	  {
 	    int i, j, k, l, m, n, o, p, q, row, col,max;
 	    double dvdr;
+	    int CountZero;
 
 	    //Pivot row
 	    row = M.length;
 	    col = M[0].length;
 
-	    if (row > col)
-	    {
-	      i = row;
-	    }
-	    else
-	    {
-	      i = col;
-	    }
-	    //Pivot row
-	    for (j = 0; j < i; j++)
-	    {
-	      max = j;
-	      for (k = j + 1; k < i; k++)
-	      {
-	        if (Math.abs(M[k][j]) > Math.abs(M[max][j]))
-	        {
-	          max = k;
-	        }
-	      }
-
-	      double[] temp1;
-	      temp1 = M[j];
-	      M[j] = M[max];
-	      M[max] = temp1;
-	  
-	      double temp2;
-	      temp2 = N[j];
-	      N[j] = N[max];
-	      N[max] = temp2;
-	      //Biar elemen pivotny jadi 1
-	      l = j;
-	      while ((l < col) && (M[j][l] == 0))
-	      {
-	        l++;
-	      }
-	      if (l < col)
-	      {
-	        dvdr = M[j][l];
-	        for (m = j; m < col; m++)
-	        {
-	          M[j][m] = M[j][m] / dvdr;
-	        }
-	        N[j] = N[j] / dvdr;
-	      }
-	      //Biar bawahny jadi 0
-	      for (n = j + 1; n < row; n++)
-	      {
-	        dvdr = M[n][l] / M[j][l];
-	        for (o = 0; o < col; o++)
-	        {
-	          M[n][o] = M[n][o] - (dvdr * M[j][o]);
-	        }
-	        N[n] = N[n] - (dvdr * N[j]);
-	      }
-	    }
+	    GaussianEl(M,N);
 	    boolean stop = false;
 	    
 	    for (p = 0; p < col; p++)
 	    {
 	    	  
 	      q = row - 1;
-	      while ((M[q][p] != 1) && (q >= 0))
+	      while ((M[q][p] != 1) && (q > 0))
 	      {
 	        if ((p == col - 1) && (M[q][p] == 0))
 	        {
@@ -292,6 +273,8 @@ public class Solver
 	          N[i] = N[i] - (temp3 * N[q]);
 	        }
 	      }
+	      
+	      
 	     // SPL s = new SPL(M,N);
 	     // s.cetakAugment();
 	      
