@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public static void GaussianEl(double[][] M, double[] N)
 	  {
 	    int i, j, k, l, m, n, o, p, capeksayakak, capek, row, col;
@@ -70,3 +68,19 @@ public static void GaussianEl(double[][] M, double[] N)
 	      }
 	    }
 	    }
+	    
+	    for (capeksayakak = 0; capeksayakak < row; capeksayakak++)
+	    {
+	    	  AllZero = isAllZero(M, capeksayakak);
+	    	  double temp[];
+	    	  if (AllZero)
+	    	  {
+	    		  temp = M[capeksayakak];
+	    		  for (capek = capeksayakak; capek < row-1 ; capek++)
+	    		  {
+	    			  M[capek] = M[capek+1];
+	    		  }
+	    		  M[row-1] = temp;
+	    	  }
+	    }
+	  }
