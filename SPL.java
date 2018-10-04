@@ -43,7 +43,7 @@ public class SPL {
 		sc = new Scanner(System.in);
 		System.out.print("Masukkan banyak variabel: ");
 		n = sc.nextInt();
-		System.out.print("Masukkan banyak persamaan");
+		System.out.print("Masukkan banyak persamaan: ");
 		p = sc.nextInt();
 		filledVar = new double[p][n];
 		filledSol = new double[p];
@@ -119,13 +119,13 @@ public class SPL {
 		int i;
 		int countRow;			//menghitung panjang Row
 		int countCol;			//Menghitung panjang column
-		double filledVar[][];
+		double  filledVar[][];
 		double filledSol[];
 		/*Algoritma*/
 		try {
 			reader = new Scanner(new FileInputStream(file_loc+filename));
-			countElmt = new Scanner(new FileInputStream(file_loc+filename));;
-			counterRow = new Scanner(new FileInputStream(file_loc+filename));;
+			countElmt = new Scanner(new FileInputStream(file_loc+filename));
+			counterRow = new Scanner(new FileInputStream(file_loc+filename));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -137,9 +137,10 @@ public class SPL {
 		}
 		while(countElmt.hasNext())
 		{
-			countElmt.nextLine();
+			countElmt.next();
 			countCol++;
 		}
+		//System.out.printf("%d %d",countRow,countCol);
 		filledVar = new double[countRow][countCol/countRow - 1];
 		filledSol = new double[countRow];
 		for( i = 0;i<filledVar.length;i++)
