@@ -1,86 +1,49 @@
-public static void GaussianEl(double[][] M, double[] N)
+public static void GaussJordanEl(double[][] M, double[] N)
 	  {
-	    int i, j, k, l, m, n, o, p, capeksayakak, capek, row, col;
+	    int i, j, k, l, m, n, o, p, q, row, col,max;
 	    double dvdr;
-	    int max;
-	    boolean AllZero;
-	  
+	    int CountZero;
+
 	    //Pivot row
 	    row = M.length;
 	    col = M[0].length;
-	  
-	    if (row <= col)
-	    {
-	      i = row;
-	    }
-	    else
-	    {
-	      i = col;
-	    }
-	    //Pivot row
-	    for (j = 0; j < i; j++)
-	    {
-	      max = j;
-	      k = j+1;
-	      while(k<row)
-	      {
-		    	  if (Math.abs(M[k][j]) > Math.abs(M[max][j]))
-		        {
-		    		  max = k;
-		        }
-		    	  k++;
-	      }
-	      double[] temp1;
-	      temp1 = M[j];
-	      M[j] = M[max];
-	      M[max] = temp1;
-	  
-	      double temp2;
-	      temp2 = N[j];
-	      N[j] = N[max];
-	      N[max] = temp2;
-	      //Biar elemen pivotny jadi 1
-	      l = j;
-	      while ((l < col) && (M[j][l] == 0))
-	      {
-	        l++;
-	      }
-	      if (l < col)
-	      {
-	        dvdr = M[j][l];
-	        for (m = j; m < col; m++)
-	        {
-	          M[j][m] = M[j][m] / dvdr;
-	        }
-	        N[j] = N[j] / dvdr;
-	      
-	      //Biar bawahny jadi 0
-	      n = j + 1;
-	      while (n < row)
-	      {
-	        dvdr = M[n][l] / M[j][l];
-	        for (o = 0; o < col; o++)
-	        {
-	          M[n][o] = M[n][o] - (dvdr * M[j][o]);
-	        }
-	        N[n] = N[n] - (dvdr * N[j]);
-	        n++;
-	      }
-	    }
-	    }
+
+	    GaussianEl(M,N);
+	    boolean stop = false;
 	    
-	    for (capeksayakak = 0; capeksayakak < row; capeksayakak++)
+	    for (p = 0; p < col; p++)
 	    {
-	    	  AllZero = isAllZero(M, capeksayakak);
-	    	  double temp[];
-	    	  if (AllZero)
-	    	  {
-	    		  temp = M[capeksayakak];
-	    		  for (capek = capeksayakak; capek < row-1 ; capek++)
-	    		  {
-	    			  M[capek] = M[capek+1];
-	    		  }
-	    		  M[row-1] = temp;
-	    	  }
+	    	  
+	      q = row - 1;
+	      while ((M[q][p] != 1) && (q > 0))
+	      {
+	        if ((p == col - 1) && (M[q][p] == 0))
+	        {
+	        		stop = true;
+	        		break;
+	        }
+	    	  	q--;
+	      }
+	      if (stop) break;
+	      double temp3;
+	     
+	      if (q != 0)
+	      {
+	        for (i = 0; i < q; i++)
+	        {
+	        	  temp3 = M[i][p] / M[q][p];
+	          for (j = 0; j < col; j++)
+	          {
+	        	  
+	        	  	M[i][j] = M[i][j] - (temp3 * M[q][j]);
+	          }
+	          
+	          N[i] = N[i] - (temp3 * N[q]);
+	        }
+	      }
+	      
+	      
+	    
+	      
 	    }
 	  }
